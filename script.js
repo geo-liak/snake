@@ -16,28 +16,21 @@
         column: this.column
     };
 
-
-    function coordinates(row, column) {
-        this.row = row;
-        this.column = column;
-    }
-
-
     let direction = "right";
     let snake = [];
     console.log("snake: " + snake.length);
 
+    // "source" is an object which acts as a source of coordinates, like activeBlock
+    function coordinates(source) {
+        this.row = source.row;
+        this.column = source.column;
+    }
 
 
-
-    // table is a two-dimensional array that stores the state of each block.
-    // board is what is shown in the browser window.
-    // 
-    // createTable(dimensions.rows, dimensions.columns);
     createBoard(dimensions.rows, dimensions.columns);
     determineNewActiveBlockPosition();
     determineNewApplePosition();
-    
+
 
 
     // functions
@@ -49,69 +42,62 @@
     //
     // The position of the desired block to be changed is determined by the argument "coordinates"
     // which should take an object with the coordinates (row and column).
-    // 
-    // If we need to change a different block based on the coordinates object we use the arguments
-    // "rowOffset" and "columnOffset" that are added on the coordinates of the object.
-    function changeBlockState(coordinates, rowOffset, columnOffset, fromState, toState) {
-        document.getElementById((coordinates.row + rowOffset) + "-" + (coordinates.column + columnOffset)).classList.replace(fromState, toState);
+    function changeBlockState(coordinates, fromState, toState) {
+        document.getElementById((coordinates.row) + "-" + (coordinates.column)).classList.replace(fromState, toState);
     }
 
 
     // In argument "action", expected value is string "grow" if the snake
-    // is about to grow. In every other case is omitted.
+    // is about to grow. In every other case, it is omitted. It's like overloading
+    // the function.
     function maintainSnake(coordinates, action) {
         console.clear();
         if (action === "grow") {
             snake.unshift(coordinates);
-            changeBlockState(snake[0], 0, 0, "empty", "green")
+            changeBlockState(snake[0], "empty", "green")
             console.log(snake);
         } else {
             snake.unshift(coordinates);
-            changeBlockState(snake[0], 0, 0, "empty", "green")
+            changeBlockState(snake[0], "empty", "green")
 
             let removedCoordinates = snake.pop();
-            snake.push();
-            changeBlockState(removedCoordinates, 0, 0, "green", "last");
+            changeBlockState(removedCoordinates, "green", "empty");
 
             console.log(snake);
         }
     }
-
-
 
     function determineNewActiveBlockPosition() {
         if (activeBlock.row == null || activeBlock.column == null) {
             // Set new coordinates
             activeBlock.column = Math.floor(Math.random() * dimensions.columns);
             activeBlock.row = Math.floor(Math.random() * dimensions.rows);
-            maintainSnake(activeBlock, "grow");
-            // changeBlockState(activeBlock, 0, 0, "empty", "green");
-        } else if (direction === "right") {
-            activeBlock.column += 1;
-        } else if (direction === "down") {
-            activeBlock.row += 1;
-        } else if (direction === "left") {
-            activeBlock.column -= 1;
-        } else if (direction === "up") {
-            activeBlock.row -= 1;
+            maintainSnake(new coordinates(activeBlock), "grow");
+        } else {
+            if (direction === "right") {
+                activeBlock.column += 1;
+            } else if (direction === "down") {
+                activeBlock.row += 1;
+            } else if (direction === "left") {
+                activeBlock.column -= 1;
+            } else if (direction === "up") {
+                activeBlock.row -= 1;
+            }
+            maintainSnake(new coordinates(activeBlock));
         }
 
-        maintainSnake(activeBlock);
-
-
-        if (activeBlock.row == apple.row && activeBlock.column == apple.column) {
+        if (activeBlock.row === apple.row && activeBlock.column === apple.column) {
             determineNewApplePosition();
-            changeBlockState(activeBlock, 0, 0, "empty", "green");
-            maintainSnake(activeBlock, "grow");
+            changeBlockState(activeBlock, "empty", "green");
+            maintainSnake(new coordinates(activeBlock), "grow");
         }
-
     }
 
 
     function determineNewApplePosition() {
         // if apple coordinates have been set, change current state from "apple" to "empty".
         if (apple.row != null || apple.column != null) {
-            changeBlockState(apple, 0, 0, "red", "empty");
+            changeBlockState(apple, "red", "empty");
         }
 
         // Set new coordinates
@@ -121,7 +107,7 @@
         } while (apple.column == activeBlock.column && apple.row == activeBlock.row);
 
         // Apply the new coordinates
-        changeBlockState(apple, 0, 0, "empty", "red");
+        changeBlockState(apple, "empty", "red");
     }
 
 
@@ -146,19 +132,6 @@
 
         console.log(document.body.innerHTML);
     }
-
-
-    // function createTable(rows, columns) {
-    //     //rows
-    //     table = new Array(rows);
-    //     //columns
-    //     for (let i = 0; i < rows; i++) {
-    //         table[i] = new Array(columns);
-    //         for (let j = 0; j < columns; j++) {
-    //             table[i][j] = "empty";
-    //         }
-    //     }
-    // }
 
 
     // determine which arrow key is pressed and store info in variable 'direction'
