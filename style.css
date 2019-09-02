@@ -1,0 +1,25 @@
+.block {
+    border: 1px solid black;
+    width: 8px;
+    height: 8px;
+    display: table-cell;
+}
+
+.empty {
+    background-color: unset;
+}
+
+.green {
+    background-color: green;
+}
+
+.red {
+    background-color: tomato;
+    border: 1px tomato solid;
+    border-radius: 70%;
+}
+
+.last {
+    background-color: chartreuse;
+}
+
