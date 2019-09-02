@@ -38,7 +38,7 @@
     //
 
     // This function changes the state of a block by replacing its classes.
-    // the classes are determined by the arguments "fromState" and "toState".
+    // The classes are determined by the arguments "fromState" and "toState".
     //
     // The position of the desired block to be changed is determined by the argument "coordinates"
     // which should take an object with the coordinates (row and column).
@@ -83,72 +83,86 @@
             } else if (direction === "up") {
                 activeBlock.row -= 1;
             }
-            maintainSnake(new coordinates(activeBlock));
-        }
+            
+            if (activeBlock.row === apple.row && activeBlock.column === apple.column) {
+                determineNewApplePosition();
+                changeBlockState(activeBlock, "empty", "green");
+                maintainSnake(new coordinates(activeBlock), "grow");
+            } else {
 
-        if (activeBlock.row === apple.row && activeBlock.column === apple.column) {
-            determineNewApplePosition();
-            changeBlockState(activeBlock, "empty", "green");
-            maintainSnake(new coordinates(activeBlock), "grow");
-        }
-    }
-
-
-    function determineNewApplePosition() {
-        // if apple coordinates have been set, change current state from "apple" to "empty".
-        if (apple.row != null || apple.column != null) {
-            changeBlockState(apple, "red", "empty");
-        }
-
-        // Set new coordinates
-        do {
-            apple.column = Math.floor(Math.random() * dimensions.columns);
-            apple.row = Math.floor(Math.random() * dimensions.rows);
-        } while (apple.column == activeBlock.column && apple.row == activeBlock.row);
-
-        // Apply the new coordinates
-        changeBlockState(apple, "empty", "red");
-    }
-
-
-    function createBoard(rows, columns) {
-        document.body.innerHTML += "\n\n";
-        for (let i = 0; i < rows; i++) {
-            let newElement = document.createElement("div");
-            newElement.setAttribute("id", "row" + i);
-            document.body.appendChild(newElement);
-            document.getElementById("row" + i).innerHTML += "\n"
-
-            for (let j = 0; j < columns; j++) {
-                newElement = document.createElement("div");
-                newElement.setAttribute("class", "block empty");
-                // set id name: "row - column"
-                newElement.setAttribute("id", i + "-" + j);
-                document.getElementById("row" + i).appendChild(newElement);
-                document.getElementById("row" + i).innerHTML += "\n"
+                maintainSnake(new coordinates(activeBlock));
             }
+
+
+            }
+
+        }
+
+
+        function determineNewApplePosition() {
+            // if apple coordinates have been set, change current state from "apple" to "empty".
+            if (apple.row != null || apple.column != null) {
+                changeBlockState(apple, "red", "empty");
+            }
+
+            // Set new coordinates
+            do {
+                apple.column = Math.floor(Math.random() * dimensions.columns);
+                apple.row = Math.floor(Math.random() * dimensions.rows);
+            } while (apple.column == activeBlock.column && apple.row == activeBlock.row);
+
+            // Apply the new coordinates
+            changeBlockState(apple, "empty", "red");
+        }
+
+
+        function createBoard(rows, columns) {
             document.body.innerHTML += "\n\n";
+            for (let i = 0; i < rows; i++) {
+                let newElement = document.createElement("div");
+                newElement.setAttribute("id", "row" + i);
+                document.body.appendChild(newElement);
+                document.getElementById("row" + i).innerHTML += "\n"
+
+                for (let j = 0; j < columns; j++) {
+                    newElement = document.createElement("div");
+                    newElement.setAttribute("class", "block empty");
+                    // set id name: "row - column"
+                    newElement.setAttribute("id", i + "-" + j);
+                    document.getElementById("row" + i).appendChild(newElement);
+                    document.getElementById("row" + i).innerHTML += "\n"
+                }
+                document.body.innerHTML += "\n\n";
+            }
+
+            console.log(document.body.innerHTML);
         }
 
-        console.log(document.body.innerHTML);
-    }
 
+        // determine which arrow key is pressed and store info in variable 'direction'
+        // prevents snake from going on the opposite direction, like passing over itself.
+        document.onkeydown = function (e) {
+            if (e.keyCode == 37) {
+                if (direction != "right") {
+                    direction = "left";
+                }
+            } else if (e.keyCode == 38) {
+                if (direction != "down") {
+                    direction = "up";
+                }
+            } else if (e.keyCode == 39) {
+                if (direction != "left") {
+                    direction = "right";
+                }
+            } else if (e.keyCode == 40) {
+                if (direction != "up") {
+                    direction = "down";
+                }
+            }
 
-    // determine which arrow key is pressed and store info in variable 'direction'
-    document.onkeydown = function (e) {
-        if (e.keyCode == 37) {
-            direction = "left";
-        } else if (e.keyCode == 38) {
-            direction = "up";
-        } else if (e.keyCode == 39) {
-            direction = "right";
-        } else if (e.keyCode == 40) {
-            direction = "down";
+            determineNewActiveBlockPosition();
         }
 
-        determineNewActiveBlockPosition();
-    }
 
 
-
-})();
+    }) ();

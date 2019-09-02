@@ -1,7 +1,7 @@
 .block {
     border: 1px solid black;
-    width: 8px;
-    height: 8px;
+    width: 15px;
+    height: 15px;
     display: table-cell;
 }
 
