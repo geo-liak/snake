@@ -6,8 +6,8 @@
      * @var dimensions
      */
     let dimensions = {
-        rows: 20,
-        columns: 40
+        rows: 10,
+        columns: 10
     };
     let apple = {
         row: this.row,
@@ -18,10 +18,9 @@
         column: this.column
     };
     let exec;
-    let timeInterval = 100;
+    let timeInterval = 150;
     let direction;
     let snake = [];
-    console.log("snake: " + snake.length);
 
     /**
      * @param {*} source Is an object which acts as a source of coordinates, like activeBlock
@@ -40,6 +39,10 @@
     function execute() {
         exec = setInterval(determineNewActiveBlockPosition, timeInterval);
         // requestAnimationFrame
+    }
+
+    function stopExecution() {
+        clearInterval(exec);
     }
 
     function speed() {
@@ -117,23 +120,45 @@
                 activeBlock.row--;
             }
 
+            checkGameOver();
+
             if (activeBlock.row === apple.row && activeBlock.column === apple.column) {
                 determineNewApplePosition();
                 changeBlockState(activeBlock, "empty", "green");
                 maintainSnake(new coordinates(activeBlock), "grow");
             } else {
-
                 maintainSnake(new coordinates(activeBlock));
-
             }
         }
     }
 
+    /**
+     * Checks if the active block is already occupied by the snake (has the "green" class).
+     * @param block An object with coordinates.
+     */
+    function isOccupiedBySnake(block) {
+        if (document.getElementById(block.row + "-" + block.column).classList.contains("green")) {
+            return true;
+        }
+    }
 
-    function isGameOver() {
+    /**
+     * Evaluates the game conditions and declares "Game Over".
+     */
+    function checkGameOver() {
+        // Snake goes beyond board.
         if (activeBlock.row > (dimensions.rows - 1) || activeBlock.row < 0 || activeBlock.column > (dimensions.columns - 1) || activeBlock.column < 0) {
+            stopExecution();
             alert("Game Over");
         }
+
+        // Snake goes to a block which is already occuppied by itself.
+        if (isOccupiedBySnake(activeBlock) && snake.length > 1) {
+            stopExecution();
+            alert("You bit yourself! Game Over!");
+        }
+
+
     }
 
 
@@ -144,10 +169,16 @@
         }
 
         // Set new coordinates
+        let oldApplePosition = {
+            row: apple.row,
+            column: apple.column
+        };
+
+        //  Determine new position if the snake already occupies this block or if the new position is the same as the current position.
         do {
             apple.column = Math.floor(Math.random() * dimensions.columns);
             apple.row = Math.floor(Math.random() * dimensions.rows);
-        } while (apple.column == activeBlock.column && apple.row == activeBlock.row);
+        } while (isOccupiedBySnake(apple) || (apple.column === oldApplePosition.column && apple.row === oldApplePosition.row));
 
         // Apply the new coordinates
         changeBlockState(apple, "empty", "red");
@@ -177,7 +208,7 @@
             document.body.innerHTML += "\n\n";
         }
 
-        console.log(document.body.innerHTML);
+        // console.log(document.body.innerHTML);
     }
 
 
