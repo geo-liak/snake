@@ -1,12 +1,35 @@
+
+
+
+
 .block {
-    border: 1px solid black;
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
     display: table-cell;
 }
 
-.empty {
-    background-color: unset;
+.bg-color1 {
+    background-color: rgb(254, 255, 199)
+}
+
+.bg-color2 {
+    background-color: rgb(254, 250, 199)
+}
+
+.border-top {
+    border-top: 1px black solid
+}
+
+.border-left {
+    border-left: 1px black solid
+}
+
+.border-bottom {
+    border-bottom: 1px black solid
+}
+
+.border-right {
+    border-right: 1px black solid
 }
 
 .green {
@@ -19,7 +42,5 @@
     border-radius: 70%;
 }
 
-.last {
-    background-color: chartreuse;
-}
+
 

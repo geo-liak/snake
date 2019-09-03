@@ -1,13 +1,12 @@
 (function () {
 
-
     /**
      * contains the dimensions of the game board
      * @var dimensions
      */
     let dimensions = {
-        rows: 10,
-        columns: 10
+        rows: 20,
+        columns: 40
     };
     let apple = {
         row: this.row,
@@ -18,7 +17,7 @@
         column: this.column
     };
     let exec;
-    let timeInterval = 150;
+    let timeInterval = 100;
     let direction;
     let snake = [];
 
@@ -29,7 +28,6 @@
         this.row = source.row;
         this.column = source.column;
     }
-
 
     createBoard(dimensions.rows, dimensions.columns);
     determineNewActiveBlockPosition();
@@ -98,6 +96,7 @@
             }
         }
     }
+
     /** 
      * Determines the next active position based of the direction
      */
@@ -157,8 +156,6 @@
             stopExecution();
             alert("You bit yourself! Game Over!");
         }
-
-
     }
 
 
@@ -199,16 +196,48 @@
 
             for (let j = 0; j < columns; j++) {
                 newElement = document.createElement("div");
-                newElement.setAttribute("class", "block empty");
+
+                // Applying the classes and alternating the colors
+                if (i % 2 == 0) {
+                    if (j % 2 == 0) {
+                        newElement.setAttribute("class", "block empty bg-color1");
+                    } else {
+                        newElement.setAttribute("class", "block empty bg-color2");
+                    }
+                } else {
+                    if (j % 2 == 0) {
+                        newElement.setAttribute("class", "block empty bg-color2");
+                    } else {
+                        newElement.setAttribute("class", "block empty bg-color1");
+                    }
+                }
+
+
                 // set id name: "row - column"
                 newElement.setAttribute("id", i + "-" + j);
                 document.getElementById("row" + i).appendChild(newElement);
                 document.getElementById("row" + i).innerHTML += "\n"
             }
+
+            
+
             document.body.innerHTML += "\n\n";
         }
 
-        // console.log(document.body.innerHTML);
+        console.log(document.body.innerHTML);
+        for (let i = 0; i < dimensions.columns; i++) {
+            document.getElementById("0-" + i).classList.add("border-top");
+            document.getElementById((dimensions.rows - 1) + "-" + i).classList.add("border-bottom");   
+        }
+        
+        for (let i = 0; i < dimensions.rows; i++) {
+            document.getElementById(i + "-0").classList.add("border-left");   
+            document.getElementById(i + "-" + (dimensions.columns - 1)).classList.add("border-right");   
+
+        }
+        
+
+
     }
 
 
