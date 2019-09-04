@@ -1,6 +1,10 @@
 
 
 
+.information-box {
+    box-sizing: border-box;
+    height: 40px;
+}
 
 .block {
     box-sizing: border-box;

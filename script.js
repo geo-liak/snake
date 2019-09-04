@@ -124,6 +124,7 @@
             } else {
                 maintainSnake(new coordinates(activeBlock));
             }
+            document.getElementById("score").innerHTML = (snake.length-1);  
         }
     }
 
@@ -188,11 +189,12 @@
      * @param {!number} columns The number of columns of the board
      */
     function createBoard(rows, columns) {
+        document.getElementById("information").classList.add("information-box");
         document.body.innerHTML += "\n\n";
         for (let i = 0; i < rows; i++) {
             let newElement = document.createElement("div");
             newElement.setAttribute("id", "row" + i);
-            document.body.appendChild(newElement);
+            document.getElementById("board").appendChild(newElement);
             document.getElementById("row" + i).innerHTML += "\n"
 
             for (let j = 0; j < columns; j++) {
