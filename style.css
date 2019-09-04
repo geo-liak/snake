@@ -1,5 +1,11 @@
-
-
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.btnReset {
+    width: 120px;
+    height: 35px;
+    margin: 20px 0 0 0 ;
+}
 
 .information-box {
     box-sizing: border-box;

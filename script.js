@@ -1,5 +1,6 @@
 (function () {
 
+
     /**
      * contains the dimensions of the game board
      * @var dimensions
@@ -17,32 +18,50 @@
         column: this.column
     };
     let exec;
-    let timeInterval = 100;
+    let timeInterval = 80;
     let direction;
     let snake = [];
+    let highScore = 0;
+
 
     /**
      * @param {Object} source Is an object which acts as a source of coordinates, like activeBlock
-     * @param {number} source.row Is an object which acts as a source of coordinates, like activeBlock
-     * @param {number} source.column Is an object which acts as a source of coordinates, like activeBlock
+     * @param {number} source.row 
+     * @param {number} source.column 
      */
     function coordinates(source) {
         this.row = source.row;
         this.column = source.column;
     }
 
+    setHighScore();
     createBoard(dimensions.rows, dimensions.columns);
     determineNewActiveBlockPosition();
     determineNewApplePosition();
+
     execute();
 
     function execute() {
         exec = setInterval(determineNewActiveBlockPosition, timeInterval);
-        // requestAnimationFrame
     }
 
     function stopExecution() {
         clearInterval(exec);
+        if ((snake.length - 1) > highScore) {
+            highScore = snake.length - 1;
+            document.getElementById("highScore").innerHTML = highScore;
+            localStorage.setItem("highScore", highScore);
+        }
+    }
+
+    function setHighScore() {
+        if (localStorage.getItem("highScore") == null) {
+            localStorage.setItem("highScore", highScore);
+        } else {
+            highScore = localStorage.getItem("highScore");
+        }
+
+        document.getElementById("highScore").innerHTML = highScore;
     }
 
     function speed() {
@@ -99,8 +118,8 @@
     function determineNewActiveBlockPosition() {
         if (activeBlock.row == null || activeBlock.column == null) {
             // Set new coordinates
-            activeBlock.column = Math.floor(Math.random() * dimensions.columns);
             activeBlock.row = Math.floor(Math.random() * dimensions.rows);
+            activeBlock.column = Math.floor(Math.random() * dimensions.columns);
             maintainSnake(new coordinates(activeBlock), "grow");
         } else {
             if (direction === null) {
@@ -124,7 +143,7 @@
             } else {
                 maintainSnake(new coordinates(activeBlock));
             }
-            document.getElementById("score").innerHTML = (snake.length-1);  
+            document.getElementById("score").innerHTML = (snake.length - 1);
         }
     }
 
@@ -225,8 +244,6 @@
             document.body.innerHTML += "\n\n";
         }
 
-        // console.log(document.body.innerHTML);
-
         for (let i = 0; i < dimensions.columns; i++) {
             document.getElementById("0-" + i).classList.add("border-top");
             document.getElementById((dimensions.rows - 1) + "-" + i).classList.add("border-bottom");
@@ -240,7 +257,7 @@
 
     // Determines which arrow key is pressed and store info in variable 'direction'
     // prevents snake from going on the opposite direction, like passing over itself.
-    document.addEventListener("keydown", e => {
+    let keysEL = document.addEventListener("keydown", e => {
         if (e.keyCode === 37) {
             if (direction !== "right") {
                 direction = "left";
@@ -262,5 +279,10 @@
         }
     })
 
+    let resetEL = document.getElementById("reset").addEventListener("click", reset);
+
+    function reset() {
+        location.reload();
+    }
 
 })();
