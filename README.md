@@ -10,3 +10,4 @@ The more apples the snake eats, the longer it becomes. The snake must not fall o
 
 The arrow keys adjust the direction of the movement.  
 ESC pauses the game.  
+R resets the game.

@@ -20,27 +20,27 @@ body {
 }
 
 .bg-color1 {
-    background-color: rgb(254, 255, 199)
+    background-color: #FEFFC7
 }
 
 .bg-color2 {
-    background-color: rgb(254, 250, 199)
+    background-color: #FEFAC7
 }
 
 .border-top {
-    border-top: 1px solid black;
+    border-top: 1px solid #828282;
 }
 
 .border-left {
-    border-left: 1px solid black;
+    border-left: 1px solid #828282;
 }
 
 .border-bottom {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #828282;
 }
 
 .border-right {
-    border-right: 1px solid black;
+    border-right: 1px solid #828282;
 }
 
 .green {

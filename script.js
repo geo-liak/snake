@@ -276,6 +276,8 @@
             }
         } else if (e.keyCode === 27) {
             alert("Game paused.");
+        } else if (e.keyCode === 82) {
+            reset();
         }
     })
 
