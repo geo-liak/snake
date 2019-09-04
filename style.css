@@ -3,6 +3,7 @@
 
 
 .block {
+    box-sizing: border-box;
     width: 20px;
     height: 20px;
     display: table-cell;
@@ -17,19 +18,19 @@
 }
 
 .border-top {
-    border-top: 1px black solid
+    border-top: 1px solid black;
 }
 
 .border-left {
-    border-left: 1px black solid
+    border-left: 1px solid black;
 }
 
 .border-bottom {
-    border-bottom: 1px black solid
+    border-bottom: 1px solid black;
 }
 
 .border-right {
-    border-right: 1px black solid
+    border-right: 1px solid black;
 }
 
 .green {
